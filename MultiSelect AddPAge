@@ -1,0 +1,30 @@
+                                      <div className='form-group col-md-6'>
+                                            <label className='label-profile' htmlFor='skillsIds'>
+                                                Permissions
+                                            </label>
+                                            <Select 
+                                            options={
+                                                rolePermissions
+                                                ? rolePermissions.map(permission => ({
+                                                    label:
+                                                    permission.name,
+                                                    value: permission.id
+                                                }))
+                                                : []
+                                            }  
+                                            isOptionDisabled={(option) => option.label.match("company-create")||option.label.match("company-delete")}
+                                            onChange={(items, option) => {
+                                                if (option.removedValue && option.removedValue.isFixed) return;
+                                                var selectedPermissions =
+                                                  Array.isArray(items) && items.length > 0
+                                                    ? items.map(item => {
+                                                        return item['value'];
+                                                      })
+                                                    : [];
+                                                setFieldValue('permissionIds', selectedPermissions);
+                                              }} 
+                                              
+                                              isMulti
+                                               
+                                               isClearable={!options.some(option => option.isFixed)}
+                                              />
