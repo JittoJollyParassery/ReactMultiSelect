@@ -1,0 +1,65 @@
+                                    <div className='form-group col-md-6'>
+                                                <label className='label-profile' htmlFor='company'>
+                                                    Role
+                                                 <span className='asterix'>&nbsp;&#42;</span> 
+                                                </label>
+                                                <Select
+                                            debugger
+                                            name="roleId"
+                                            value={
+                                                roleList
+                                                    ? roleList.map(role => ({
+                                                        label:
+                                                        role.label,
+                                                        value: role.value
+                                                    }))
+                                                    : []
+                                            }
+                                            options={
+                                                roles
+                                                    ? roles.map(role => ({
+                                                        label:
+                                                        role.name,
+                                                        value: role.id
+                                                    }))
+                                                    : []
+                                            }
+                                            isOptionDisabled={(option) => (userType === 'COMPANY'||userType === 'EMPLOYEE')?option.label.match("_ADMIN"):null}
+                                            onChange={(items, option) => {
+                                                if (option.removedValue && option.removedValue.isFixed) return;
+                                                if (option.removedValue) {
+                                                    const newoptions = [...roleList].filter(item => item.value !== option.removedValue.value)
+                                                    setRoleList(newoptions);
+                                                    var ids = newoptions.map(item => {
+                                                        return item['value'];
+                                                    })
+                                                    console.log('preselected items after remove....................', newoptions);
+                                                    setFieldValue('roleId', ids);
+
+                                                } else {
+                                                    var selectedPermissions =
+                                                        Array.isArray(items) && items.length > 0
+                                                            ? items.map(item => {
+                                                                return item['value'];
+                                                            })
+                                                            : [];
+                                                    setFieldValue('roleId', selectedPermissions);
+                                                    console.log("permissionIds....", selectedPermissions);
+                                                    setRoleList([...roleList, option.option])
+                                                    if (!selectedPermissions.length) {
+                                                        console.log('permissionIds delete ')
+                                                        setRoleList([])
+                                                    }
+
+
+                                                }
+                                            }}
+
+                                            isMulti
+
+                                            isClearable={!roles.some(option => option.isFixed)} />
+                                                <ErrorMessage className={`${
+                                                    touched.roleId && errors.roleId ? "invalid-text" : ""
+                                                    }`} name="roleId" component="div" />
+                                            </div>
+                                              )}
